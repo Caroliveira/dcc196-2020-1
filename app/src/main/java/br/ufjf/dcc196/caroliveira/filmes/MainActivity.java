@@ -1,6 +1,7 @@
 package br.ufjf.dcc196.caroliveira.filmes;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerViewMovies;
     private List<Movie> movies;
+    private LinearLayoutManager layoutManager;
+    private MovieAdapter movieAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +27,9 @@ public class MainActivity extends AppCompatActivity {
         }};
 
         recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerViewMovies.setLayoutManager(layoutManager);
+        movieAdapter = new MovieAdapter(movies);
+        recyclerViewMovies.setAdapter(movieAdapter);
     }
 }
