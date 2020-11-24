@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         new ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerViewMovies);
     }
 
-    public void onButtonAddClick(View view) {
+    public void onButtonAddMovieClick(View view) {
         Intent intent = new Intent(getApplicationContext(), CreateMovieActivity.class);
         startActivity(intent);
     }
