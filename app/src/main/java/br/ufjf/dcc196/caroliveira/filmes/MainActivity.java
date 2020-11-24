@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,5 +52,10 @@ public class MainActivity extends AppCompatActivity {
         };
 
         new ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerViewMovies);
+    }
+
+    public void onButtonAddClick(View view) {
+        Intent intent = new Intent(getApplicationContext(), CreateMovieActivity.class);
+        startActivity(intent);
     }
 }
