@@ -1,9 +1,12 @@
 package br.ufjf.dcc196.caroliveira.filmes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Movie> movies;
     private LinearLayoutManager layoutManager;
     private MovieAdapter movieAdapter;
+    private ItemTouchHelper.SimpleCallback touchHelperCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,5 +35,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewMovies.setLayoutManager(layoutManager);
         movieAdapter = new MovieAdapter(movies);
         recyclerViewMovies.setAdapter(movieAdapter);
+
+        touchHelperCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                movies.remove(viewHolder.getAdapterPosition());
+                movieAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+            }
+        };
+
+        new ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerViewMovies);
     }
 }
