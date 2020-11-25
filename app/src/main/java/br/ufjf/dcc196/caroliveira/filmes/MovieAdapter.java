@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +15,11 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private final List<Movie> movies;
+    private OnMovieClickListener listener;
 
-    public MovieAdapter(List<Movie> movies) {
+    public MovieAdapter(List<Movie> movies, OnMovieClickListener listener){
         this.movies = movies;
+        this.listener = listener;
     }
 
     @NonNull
@@ -50,13 +53,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         private TextView textViewDirector;
         private TextView textViewWatched;
 
-        public MovieViewHolder(@NonNull View itemView) {
+        public MovieViewHolder(@NonNull final View itemView) {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewYear = itemView.findViewById(R.id.textViewYear);
             textViewStyle = itemView.findViewById(R.id.textViewStyle);
             textViewDirector = itemView.findViewById(R.id.textViewDirector);
             textViewWatched = itemView.findViewById(R.id.textViewWatched);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onMovieClick(itemView, getAdapterPosition());
+                }
+            });
         }
+    }
+
+    public interface OnMovieClickListener {
+        void onMovieClick(View source, int position);
     }
 }

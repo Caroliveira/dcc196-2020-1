@@ -16,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.OnMovieClickListener {
     public static final int REQUEST = 1;
 
     private RecyclerView recyclerViewMovies;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
         layoutManager = new LinearLayoutManager(this);
         recyclerViewMovies.setLayoutManager(layoutManager);
-        movieAdapter = new MovieAdapter(movies);
+        movieAdapter = new MovieAdapter(movies, this);
         recyclerViewMovies.setAdapter(movieAdapter);
 
         touchHelperCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.RIGHT) {
@@ -79,5 +79,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Cancelado", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onMovieClick(View source, int position) {
+        Boolean watched = !movies.get(position).getWatched();
+        String message = watched ? "Já assisti!" : "Opa! Não vi ainda.";
+        movies.get(position).setWatched(watched);
+        movieAdapter.notifyItemChanged(position);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
