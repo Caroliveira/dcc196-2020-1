@@ -1,6 +1,7 @@
 package br.ufjf.dcc196.caroliveira.filmes;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,11 +11,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int REQUEST = 1;
+
     private RecyclerView recyclerViewMovies;
     private List<Movie> movies;
     private LinearLayoutManager layoutManager;
@@ -56,6 +60,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void onButtonAddMovieClick(View view) {
         Intent intent = new Intent(getApplicationContext(), CreateMovieActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            String title = data.getExtras().getString("title");
+            String year = data.getExtras().getString("year");
+            String style = data.getExtras().getString("style");
+            String director = data.getExtras().getString("director");
+            Boolean watched = data.getExtras().getBoolean("watched");
+            Movie newMovie = new Movie(title, year, style, director, watched);
+            movies.add(movies.size(), newMovie);
+            movieAdapter.notifyDataSetChanged();
+            Toast.makeText(this, "Filme adicionado com sucesso!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Cancelado", Toast.LENGTH_SHORT).show();
+        }
     }
 }

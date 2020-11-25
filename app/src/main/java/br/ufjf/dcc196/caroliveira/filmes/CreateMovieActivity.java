@@ -2,11 +2,12 @@ package br.ufjf.dcc196.caroliveira.filmes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateMovieActivity extends AppCompatActivity {
     private EditText editTextTitle;
@@ -28,16 +29,32 @@ public class CreateMovieActivity extends AppCompatActivity {
     }
 
     public void onButtonCancelClick(View view) {
-        String title = editTextTitle.getText().toString();
-        String year = editTextYear.getText().toString();
-        String style = editTextStyle.getText().toString();
-        String director = editTextDirector.getText().toString();
-        Boolean watched = checkBoxWatched.isChecked();
-        Movie newMovie = new Movie(title, year, style, director, watched);
         finish();
     }
 
     public void onButtonAddClick(View view) {
-        finish();
+        String title = editTextTitle.getText().toString();
+        String year = editTextYear.getText().toString();
+        String style = editTextStyle.getText().toString();
+        String director = editTextDirector.getText().toString();
+
+        if (title.isEmpty()){
+            editTextTitle.requestFocus();
+        } else if (year.isEmpty()){
+            editTextYear.requestFocus();
+        } else if (style.isEmpty()){
+            editTextStyle.requestFocus();
+        } else if (director.isEmpty()){
+            editTextDirector.requestFocus();
+        } else {
+            Intent result = new Intent();
+            result.putExtra("title", title);
+            result.putExtra("year", year);
+            result.putExtra("style", style);
+            result.putExtra("director", director);
+            result.putExtra("watched", checkBoxWatched.isChecked());
+            setResult(RESULT_OK, result);
+            finish();
+        }
     }
 }
